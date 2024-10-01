@@ -36,8 +36,6 @@ int largest(vector<int> &arr) {
 }
 ```
 
----
-
 # 2. Second Largest Element in an Array
 
 ### Problem Link
@@ -183,8 +181,6 @@ int getSecondLargest(vector<int> &arr) {
 For more details, check
 [this article](https://medium.com/@gokulvaradan/find-second-largest-and-second-smallest-element-in-the-array-11c169e902b4)
 
----
-
 # 3. Check if an Array is Sorted
 
 ### Problem Link
@@ -247,5 +243,146 @@ bool arraySortedOrNot(vector<int>& arr) {
         }
     }
     return true;
+}
+```
+
+# 4. Remove Duplicates from Sorted Array
+
+### Problem Link
+
+[LeetCode - Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+
+## Approach 1: Using Hashmap/Set
+
+### Idea
+
+We can use a `std::unordered_set` to track unique elements in the array. As we traverse the array, we insert each element into the set. For every unique element found, place it in the first `k` positions of the original array.
+
+### Time Complexity
+
+- **Time Complexity**: `O(n)`  
+  We traverse the array once, and the set insertion and lookup operations are `O(1)` on average, where `n` is the size of the array.
+
+### Space Complexity
+
+- **Space Complexity**: `O(k)`  
+  We use extra space for storing the unique elements in the set, where `k` is the number of unique elements.
+
+### Code
+
+```cpp
+int removeDuplicates(std::vector<int>& nums) {
+    std::unordered_set<int> uniqueElements;
+    int k = 0; // Index for placing unique elements
+
+    for (int num : nums) {
+        // If the number is not in the set, it's unique
+        if (uniqueElements.insert(num).second) {
+            nums[k++] = num; // Place unique element in the array
+        }
+    }
+
+    return k; // Return the new length of the array
+}
+```
+
+## Approach 2: Two Pointers Technique
+
+### Idea
+
+We use two pointers: `i` and `j`. Both start at the beginning of the array. The pointer `j` traverses the array while `i` tracks the position of unique elements. When we find that `nums[j] != nums[i]`, we increment `i` and assign `nums[i] = nums[j]`.
+
+### Time Complexity
+
+- **Time Complexity**: `O(n)`  
+  The array is traversed once using pointer `j`, where `n` is the size of the array.
+
+### Space Complexity
+
+- **Space Complexity**: `O(1)`  
+  We only use constant extra space for the two pointers.
+
+### Code
+
+```cpp
+int removeDuplicates(vector<int>& nums) {
+    if (nums.size() == 0) return 0;
+
+    int i = 0; // Pointer to track unique elements
+
+    for (int j = 1; j < nums.size(); j++) {
+        // If the current element is different from the last unique one
+        if (nums[j] != nums[i]) {
+            i++; // Move to the next position for a unique element
+            nums[i] = nums[j]; // Update the position with the new unique element
+        }
+    }
+
+    return i + 1; // The length of the array with unique elements
+}
+```
+
+# 5. Left Rotate an Array by One
+
+### Problem Link
+
+[Naukri - Left Rotate an Array by One](https://www.naukri.com/code360/problems/left-rotate-an-array-by-one_5026278)
+
+### Approach 1: Using a Dummy Array
+
+**Idea**  
+We can take another dummy array of the same length and then shift all elements in the array toward the left. Finally, store the first element at the last position of the dummy array and return it.
+
+**Time Complexity**  
+Time Complexity: O(n)  
+The function traverses the entire array of size `n` once, making the time complexity linear.
+
+**Space Complexity**  
+Space Complexity: O(n)  
+We use extra space for the dummy array.
+
+**Code**
+
+```cpp
+#include <vector>
+using namespace std;
+
+vector<int> rotateArray(vector<int>& arr, int n) {
+    // Approach 1: Using a dummy array
+    vector<int> rotatedArray(n); // Create a dummy array of the same length
+    for (int i = 0; i < n - 1; i++) {
+        rotatedArray[i] = arr[i + 1]; // Shift all elements towards the left
+    }
+    rotatedArray[n - 1] = arr[0]; // Store the first element at the end
+    return rotatedArray; // Return the rotated array
+}
+```
+
+### Approach 2: Using a Temp Variable
+
+**Idea**  
+Store the first element in a temporary variable. Shift every element one position back, then assign the first value to the last position.
+
+**Time Complexity**  
+Time Complexity: O(n)  
+The function traverses the entire array of size `n` once, making the time complexity linear.
+
+**Space Complexity**  
+Space Complexity: O(1)  
+We only use constant extra space for the temp variable.
+
+**Code**
+
+```cpp
+vector<int> rotateArray(vector<int>& arr, int n) {
+    // Approach 2: Using a temp variable
+    if (n == 0) return arr; // Handle empty array case
+
+    int temp = arr[0]; // Store the first element in temp
+    for (int i = 0; i < n - 1; i++) {
+        arr[i] = arr[i + 1]; // Shift every element one position behind
+    }
+    arr[n - 1] = temp; // Assign the first value = last value (stored in temp variable)
+    return arr; // Return the rotated array
 }
 ```
