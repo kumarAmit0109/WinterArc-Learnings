@@ -482,7 +482,7 @@ void setZeroes(vector<vector<int>> &matrix) {
 **Intuition:**  
 This approach uses the first row and first column of the matrix itself to keep track of which rows and columns need to be set to `0`. This optimization reduces the space complexity from O(N + M) to O(1) since we are not using any additional arrays.
 
-#### Steps:
+### Steps:
 
 1. **Initialization:**  
    Declare a variable `col0` to keep track of whether the first column needs to be set to `0`. Initialize it to `1`.
@@ -504,7 +504,7 @@ This approach uses the first row and first column of the matrix itself to keep t
    - If `matrix[0][0]` is `0`, set all elements in the first row to `0`.
    - If `col0` is `0`, set all elements in the first column to `0`.
 
-#### Code Implementation:
+### Code Implementation:
 
 ```cpp
 void setZeroes(vector<vector<int>>& matrix) {
@@ -675,12 +675,3 @@ Given an n x n 2D matrix representing an image, rotate the image by 90 degrees (
       }
   }
   ```
-
----
-
-### Conclusion
-
-- **Approach 1** is straightforward but requires additional space for a new matrix.
-- **Approach 2** is more efficient in terms of space and modifies the matrix in place, making it preferable for larger matrices.
-
-This detailed breakdown can help anyone understand the problem and the different approaches to solving it effectively. Feel free to add it to your GitHub repository!
