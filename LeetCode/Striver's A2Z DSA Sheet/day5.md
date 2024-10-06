@@ -582,7 +582,7 @@ Approach 1 is unsuitable for matrices that contain negative numbers, as the mark
 
 Given an n x n 2D matrix representing an image, rotate the image by 90 degrees (clockwise). You have to rotate the matrix in place, which means you need to modify the input 2D matrix directly.
 
-### Approach 1: Reverse Columns
+## Approach 1: Reverse Columns
 
 **Idea**:
 
@@ -627,7 +627,7 @@ Given an n x n 2D matrix representing an image, rotate the image by 90 degrees (
    }
    ```
 
-### Approach 2: Transpose and Swap Columns
+## Approach 2: Transpose and Swap Columns
 
 **Idea**:
 
