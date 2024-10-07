@@ -200,3 +200,320 @@ vector<vector<int>> generate(int numRows) {
     return result;
 }
 ```
+
+# 29. Majority Element II
+
+### Problem Link
+
+[Leetcode - Majority Element II](https://leetcode.com/problems/majority-element-ii/description/)
+
+## Approach 1: Brute Force (Count Elements)
+
+1. **Idea**: For each element in the array, count its frequency. If the frequency of any element is greater than `nums.size() / 3`, add it to the result if it's not already in the result array.
+2. **Steps**:
+
+   - For every element, count how many times it appears in the array.
+   - If an element's count exceeds `nums.size() / 3`, check if it's already in the result.
+   - If not, add it to the result array.
+   - Return the result.
+
+3. **Time Complexity**: `O(n^2)`  
+   For each element, we traverse the array to count its occurrences.
+
+4. **Space Complexity**: `O(n)`  
+   Space is used to store the result array.
+
+### Code
+
+```cpp
+vector<int> majorityElement(vector<int>& nums) {
+    vector<int> ans;
+    int n = nums.size();
+
+    for (int i = 0; i < n; i++) {
+        int count = 0;
+
+        // Count frequency of nums[i]
+        for (int j = 0; j < n; j++) {
+            if (nums[i] == nums[j]) {
+                count++;
+            }
+        }
+
+        // Check if count is more than n/3 and element is not already in the result
+        if (count > n / 3 && find(ans.begin(), ans.end(), nums[i]) == ans.end()) {
+            ans.push_back(nums[i]);
+        }
+    }
+
+    return ans;
+}
+```
+
+## Approach 2: HashMap (Frequency Count)
+
+1. **Idea**: We maintain a frequency count for each element using a hash map. After counting, we check which elements have a frequency greater than `nums.size() / 3`.
+
+2. **Steps**:
+
+   - Traverse the array and use a hash map to store the frequency of each element.
+   - After populating the map, check for elements whose frequency exceeds `nums.size() / 3`.
+   - Add these elements to the result vector and return the result.
+
+3. **Time Complexity**: `O(n)`  
+   We traverse the array once to build the frequency map and then again to collect elements with a frequency greater than `n/3`.
+
+4. **Space Complexity**: `O(n)`  
+   The hash map uses extra space proportional to the number of unique elements.
+
+### Code
+
+```cpp
+vector<int> majorityElement(vector<int>& nums) {
+    unordered_map<int, int> freqMap;
+    vector<int> result;
+    int n = nums.size();
+
+    // Step 1: Count frequency of each element
+    for (int num : nums) {
+        freqMap[num]++;
+    }
+
+    // Step 2: Find elements with frequency > n/3
+    for (auto& [num, count] : freqMap) {
+        if (count > n / 3) {
+            result.push_back(num);
+        }
+    }
+
+    return result;
+}
+```
+
+## Approach 3: Boyer-Moore Voting Algorithm
+
+1. **Idea**: Since at most two elements can have a frequency greater than `nums.size() / 3`, we maintain two candidates (`elem1`, `elem2`) and their respective counts (`count1`, `count2`). We then make a second pass to validate the candidates.
+
+2. **Steps**:
+
+   - Traverse the array to find two potential majority elements using the Boyer-Moore Voting Algorithm.
+   - On the second pass, validate if these candidates appear more than `nums.size() / 3` times.
+
+3. **Conditions**:
+
+   1. If `count1 == 0` and `nums[i] != elem2`, update `elem1` to `nums[i]` and set `count1 = 1`.
+   2. If `count2 == 0` and `nums[i] != elem1`, update `elem2` to `nums[i]` and set `count2 = 1`.
+   3. If `nums[i] == elem1`, increment `count1`.
+   4. If `nums[i] == elem2`, increment `count2`.
+   5. Else, decrement `count1` and `count2`.
+
+4. **Time Complexity**: `O(n)`  
+   We traverse the array twice: once to find candidates and once to validate them.
+
+5. **Space Complexity**: `O(1)`  
+   The algorithm uses a constant amount of extra space for variables `elem1`, `elem2`, `count1`, and `count2`.
+
+### Code
+
+```cpp
+vector<int> majorityElement(vector<int>& nums) {
+    int elem1 = -1, elem2 = -1, count1 = 0, count2 = 0;
+    int n = nums.size();
+
+    // Step 1: Find potential candidates using Boyer-Moore Voting Algorithm
+    for (int num : nums) {
+        if (num == elem1) {
+            count1++;
+        } else if (num == elem2) {
+            count2++;
+        } else if (count1 == 0) {
+            elem1 = num;
+            count1 = 1;
+        } else if (count2 == 0) {
+            elem2 = num;
+            count2 = 1;
+        } else {
+            count1--;
+            count2--;
+        }
+    }
+
+    // Step 2: Validate the candidates
+    count1 = count2 = 0;
+    for (int num : nums) {
+        if (num == elem1) count1++;
+        else if (num == elem2) count2++;
+    }
+
+    vector<int> result;
+    if (count1 > n / 3) result.push_back(elem1);
+    if (count2 > n / 3) result.push_back(elem2);
+
+    return result;
+}
+```
+
+# 30. 3Sum
+
+### Problem Link
+
+[Leetcode - 3Sum](https://leetcode.com/problems/3sum/description/)
+
+## Approach 1: Brute Force with Three Nested Loops
+
+### Steps:
+
+1. **Declare** a set `uniqueTriplets` to store the unique triplets.
+2. **Iterate** over the array with three nested loops:
+   - The outer loop runs with index `i` from `0` to `n-2`.
+   - The middle loop runs with index `j` from `i+1` to `n-1`.
+   - The inner loop runs with index `k` from `j+1` to `n-1`.
+3. **Check** the sum of the current triplet `nums[i] + nums[j] + nums[k]`:
+   - If the sum is equal to 0, sort the triplet and insert it into the set `uniqueTriplets`.
+4. **Convert** the set of triplets to a vector of vectors and return it as the result.
+
+### Time and Space Complexity
+
+- **Time Complexity**: `O(n^3)`  
+  The three nested loops result in a cubic time complexity.
+- **Space Complexity**: `O(m)`  
+  The space complexity depends on the number of unique triplets `m` stored in the set.
+
+### Code
+
+```cpp
+vector<vector<int>> threeSum(vector<int>& nums) {
+    set<vector<int>> uniqueTriplets;  // To store unique triplets
+
+    int n = nums.size();
+
+    // Iterate over all possible triplets using three nested loops
+    for (int i = 0; i < n - 2; i++) {
+        for (int j = i + 1; j < n - 1; j++) {
+            for (int k = j + 1; k < n; k++) {
+                // Check if the sum of the triplet is zero
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    vector<int> triplet = {nums[i], nums[j], nums[k]};
+                    sort(triplet.begin(), triplet.end());  // Sort the triplet
+                    uniqueTriplets.insert(triplet);  // Insert into set to avoid duplicates
+                }
+            }
+        }
+    }
+
+    // Convert the set to a vector of vectors and return it
+    return vector<vector<int>>(uniqueTriplets.begin(), uniqueTriplets.end());
+}
+```
+
+## Approach 2: HashSet to Find the Third Element
+
+### Steps:
+
+1. **Declare** a set `uniqueTriplets` to store the unique triplets.
+2. Use an outer loop with index `i` running from `0` to `n-1` to fix the first element.
+3. **Declare** a HashSet `seen` to keep track of elements between indices `i` and `j`.
+4. Use an inner loop with index `j` running from `i+1` to `n-1` to iterate over the array for the second element.
+5. **Calculate** the value of the third element as `-(nums[i] + nums[j])`.
+6. **Check** if this third element exists in the HashSet:
+   - If it exists, sort the triplet and insert it into the set `uniqueTriplets`.
+7. After processing the inner loop, **insert** the current element `nums[j]` into the HashSet.
+8. **Convert** the set of triplets to a vector of vectors and return it as the result.
+
+### Time and Space Complexity
+
+- **Time Complexity**: `O(n^2)`  
+  We use two loops, and each loop runs in `O(n)`. The time complexity is quadratic, which is an improvement from the cubic approach.
+
+- **Space Complexity**: `O(n)`  
+  The space complexity is linear because of the HashSet used to track the elements and the space used for storing the unique triplets.
+
+### Code
+
+```cpp
+vector<vector<int>> threeSum(vector<int>& nums) {
+    set<vector<int>> uniqueTriplets;  // To store unique triplets
+    int n = nums.size();
+
+    // Iterate over each element as the first fixed element
+    for (int i = 0; i < n - 1; i++) {
+        unordered_set<int> seen;  // HashSet to track the second element
+        for (int j = i + 1; j < n; j++) {
+            int thirdElement = -(nums[i] + nums[j]);  // The third element we are looking for
+            if (seen.find(thirdElement) != seen.end()) {
+                vector<int> triplet = {nums[i], nums[j], thirdElement};
+                sort(triplet.begin(), triplet.end());  // Sort the triplet
+                uniqueTriplets.insert(triplet);  // Insert into set to avoid duplicates
+            }
+            seen.insert(nums[j]);  // Add current element to the set
+        }
+    }
+
+    // Convert the set to a vector of vectors and return it
+    return vector<vector<int>>(uniqueTriplets.begin(), uniqueTriplets.end());
+}
+```
+
+## Approach 3: Two Pointers after Sorting
+
+### Steps:
+
+1. **Sort** the input array `nums` to enable the use of two pointers.
+2. Use an outer loop with index `i` running from `0` to `n-1` to fix the first element:
+   - **Skip** duplicates by checking if the current element is the same as the previous one.
+3. Initialize two pointers:
+   - `j` starting from `i + 1` (the next element).
+   - `k` starting from the last index of the array.
+4. While `j` is less than `k`, calculate the sum of the triplet `nums[i] + nums[j] + nums[k]`:
+   - If the sum is **greater than** `0`, decrement the pointer `k` to reduce the sum.
+   - If the sum is **less than** `0`, increment the pointer `j` to increase the sum.
+   - If the sum is **equal to** `0`, store the triplet in the result, then:
+     - Increment `j` and decrement `k`, skipping duplicates.
+5. After processing, continue to the next iteration of the outer loop.
+6. **Return** the list of unique triplets.
+
+### Time and Space Complexity
+
+- **Time Complexity**: `O(n^2)`  
+  The outer loop runs in `O(n)`, and the inner loop also runs in `O(n)` for each iteration of the outer loop.
+
+- **Space Complexity**: `O(1)`  
+  We are using constant space for pointers and the result, not counting the output.
+
+### Code
+
+```cpp
+vector<vector<int>> threeSum(vector<int>& nums) {
+    set<vector<int>> uniqueTriplets;  // To store unique triplets
+    int n = nums.size();
+    sort(nums.begin(), nums.end());  // Sort the array
+
+    // Iterate over each element as the first fixed element
+    for (int i = 0; i < n - 2; i++) {
+        if (i > 0 && nums[i] == nums[i - 1]) continue;  // Skip duplicates
+
+        int j = i + 1;  // Start second pointer
+        int k = n - 1;  // Start third pointer
+
+        while (j < k) {
+            int sum = nums[i] + nums[j] + nums[k];
+            if (sum > 0) {
+                k--;  // We need a smaller sum
+            } else if (sum < 0) {
+                j++;  // We need a larger sum
+            } else {
+                uniqueTriplets.insert({nums[i], nums[j], nums[k]});  // Found a triplet
+                j++;
+                k--;
+                // Skip duplicates for j
+                while (j < k && nums[j] == nums[j - 1]) j++;
+                // Skip duplicates for k
+                while (j < k && nums[k] == nums[k + 1]) k--;
+            }
+        }
+    }
+
+    // Convert the set to a vector of vectors and return it
+    return vector<vector<int>>(uniqueTriplets.begin(), uniqueTriplets.end());
+}
+```
