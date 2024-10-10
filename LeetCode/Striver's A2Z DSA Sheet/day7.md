@@ -1,3 +1,129 @@
+# 34. Merge Intervals
+
+### Problem Link
+
+[Merge Intervals - LeetCode](https://leetcode.com/problems/merge-intervals/description/)
+
+## Approach 1: Naive Approach (Brute-force)
+
+### Idea
+
+The idea is to merge overlapping intervals by sorting the intervals first and then grouping closer intervals. We use two loops to traverse the array of intervals and check if two intervals can be merged. If they can, we merge them, otherwise, we move to the next interval.
+
+### Steps:
+
+1. **Sort the Intervals**:
+   - First, we sort the intervals based on their start time. This ensures that closer intervals will be adjacent.
+2. **Merge the Intervals**:
+   - Initialize an empty result list to store merged intervals.
+   - Iterate through the intervals:
+     - If the result list is empty or the current interval cannot be merged with the last interval in the result list, add it to the result.
+     - If the current interval overlaps with the last interval in the result list, merge the intervals by updating the end of the last interval to the maximum of the two overlapping intervals.
+3. **Return the Result**:
+   - Return the merged intervals list.
+
+### Time Complexity
+
+- `O(n log n)` due to sorting the intervals.
+- `O(n)` for merging the intervals.
+
+Overall time complexity is `O(n log n)`.
+
+### Space Complexity
+
+- `O(n)` for storing the result.
+
+### Code
+
+```cpp
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    if (intervals.empty()) return {};  // Handle edge case if no intervals
+
+    // Step 1: Sort intervals based on their start time
+    sort(intervals.begin(), intervals.end());
+
+    // Step 2: Initialize the result list
+    vector<vector<int>> result;
+
+    // Step 3: Traverse the intervals and merge if necessary
+    for (auto& interval : intervals) {
+        // If result is empty or current interval does not overlap with the last one
+        if (result.empty() || result.back()[1] < interval[0]) {
+            result.push_back(interval);  // Add the interval to result
+        } else {
+            // If the intervals overlap, merge them by updating the end of the last interval
+            result.back()[1] = max(result.back()[1], interval[1]);
+        }
+    }
+
+    return result;  // Return the merged intervals
+}
+```
+
+## Approach 2: Optimized Approach (Single Loop Merge)
+
+### Idea
+
+Instead of using a nested loop to check for merging intervals, we can accomplish this in a single traversal after sorting the intervals. We maintain a result list where we merge intervals as we go through the array.
+
+### Steps:
+
+1. **Sort the Intervals**:
+
+   - Sort the intervals by their start time to ensure closer intervals are adjacent.
+
+2. **Merge Intervals**:
+   - Start traversing the sorted intervals.
+   - Add the first interval directly to the result.
+   - For each subsequent interval:
+     - **Case 1**: If it overlaps with the last interval in the result, merge them by updating the last interval's end time to the maximum end time.
+     - **Case 2**: If it does not overlap, add it directly to the result list.
+3. **Return the Result**:
+   - Return the merged intervals from the result list.
+
+### Time Complexity
+
+- Sorting the intervals takes `O(n log n)`.
+- Merging intervals takes `O(n)`.
+
+Overall time complexity is `O(n log n)`.
+
+### Space Complexity
+
+- `O(n)` for storing the result.
+
+### Code
+
+```cpp
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    if (intervals.empty()) return {};  // Handle edge case if no intervals
+
+    // Step 1: Sort intervals based on their start time
+    sort(intervals.begin(), intervals.end());
+
+    // Step 2: Initialize the result list with the first interval
+    vector<vector<int>> result;
+    result.push_back(intervals[0]);
+
+    // Step 3: Traverse the intervals and merge as needed
+    for (int i = 1; i < intervals.size(); i++) {
+        // Get the last interval in the result
+        vector<int>& lastInterval = result.back();
+
+        // Case 1: If intervals overlap, merge them
+        if (intervals[i][0] <= lastInterval[1]) {
+            lastInterval[1] = max(lastInterval[1], intervals[i][1]);
+        }
+        // Case 2: If no overlap, add the current interval to the result
+        else {
+            result.push_back(intervals[i]);
+        }
+    }
+
+    return result;  // Return the merged intervals
+}
+```
+
 # 35. Merge Two Sorted Arrays Without Extra Space
 
 ### Problem Link
