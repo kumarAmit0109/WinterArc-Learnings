@@ -1,4 +1,4 @@
-# String to Integer (atoi)
+# 81. String to Integer (atoi)
 
 ### Problem Link
 
@@ -21,8 +21,6 @@
 ### Space Complexity
 
 - **O(1)**: No extra space is used apart from a few variables.
-
----
 
 ### Code
 
