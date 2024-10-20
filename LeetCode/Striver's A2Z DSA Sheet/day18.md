@@ -111,3 +111,76 @@ void deleteNode(ListNode* node) {
     node->next = node->next->next;    // Bypass the next node.
 }
 ```
+
+# 89. Count Nodes of Linked List
+
+### Problem Link
+
+[GeeksforGeeks - Count Nodes of Linked List](https://www.geeksforgeeks.org/problems/count-nodes-of-linked-list/0)
+
+## Approach: Iterative Traversal
+
+### Idea
+
+We traverse the linked list from the head to the end, counting the number of nodes.
+
+### Time Complexity
+
+- **O(n)**: We traverse all `n` nodes of the linked list.
+
+### Space Complexity
+
+- **O(1)**: No extra space is used.
+
+### Code
+
+```cpp
+int getCount(struct Node* head) {
+    int count = 0;  // Initialize count to 0
+    struct Node* current = head;
+
+    while (current != nullptr) {
+        count++;            // Increment count for each node
+        current = current->next;  // Move to the next node
+    }
+
+    return count;  // Return the total node count
+}
+```
+
+# 90. Search in Linked List
+
+### Problem Link
+
+[GeeksforGeeks - Search in Linked List](https://www.geeksforgeeks.org/problems/search-in-linked-list-1664434326/1)
+
+## Approach: Iterative Traversal
+
+### Idea
+
+We traverse the linked list from the head to the end, checking if any node contains the target value (`key`).
+
+### Time Complexity
+
+- **O(n)**: We traverse all `n` nodes in the worst case.
+
+### Space Complexity
+
+- **O(1)**: No extra space is used.
+
+### Code
+
+```cpp
+bool searchKey(int n, struct Node* head, int key) {
+    struct Node* current = head;
+
+    while (current != nullptr) {
+        if (current->data == key) {
+            return true;  // Key found
+        }
+        current = current->next;  // Move to the next node
+    }
+
+    return false;  // Key not found
+}
+```
