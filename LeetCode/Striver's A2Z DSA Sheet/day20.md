@@ -53,7 +53,7 @@ ListNode* reverseList(ListNode* head) {
 }
 ```
 
-# Reverse Linked List (Recursive)
+# 97. Reverse Linked List (Recursive)
 
 ### Problem Link
 
@@ -144,5 +144,207 @@ ListNode* reverse(ListNode* head) {
 
 ListNode* reverseList(ListNode* head) {
     return reverse(head);  // Start the recursion
+}
+```
+
+# 98. Linked List Cycle
+
+### Problem Link
+
+[LeetCode - Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/description/)
+
+## Approach 1: Using a Hash Map
+
+### Algorithm:
+
+1. **Traverse the List:**  
+   As we traverse the linked list, use a hash map (or set) to mark each node as visited.
+
+2. **Check for Cycles:**  
+   Before adding a node to the map, check if the current node is already marked as visited. If it is, return `true`, indicating that a cycle is present.
+
+3. **Return False:**  
+   If we finish traversing the list without finding a cycle, return `false`.
+
+### Time Complexity
+
+- **O(n)**: We traverse the entire list once.
+
+### Space Complexity
+
+- **O(n)**: We use additional space for the hash map.
+
+### Code
+
+```cpp
+bool hasCycle(ListNode *head) {
+    unordered_set<ListNode*> visited;
+    ListNode* current = head;
+
+    while (current != NULL) {
+        // Check if the current node is already visited
+        if (visited.find(current) != visited.end()) {
+            return true;  // Cycle found
+        }
+        // Mark the current node as visited
+        visited.insert(current);
+        current = current->next;  // Move to the next node
+    }
+    return false;  // No cycle found
+}
+```
+
+## Approach 2: Tortoise and Hare Algorithm
+
+### Algorithm:
+
+1. **Initialize Pointers:**  
+   Create two pointers, `slow` and `fast`. Initialize both to the head of the linked list.
+
+2. **Traverse with Two Pointers:**  
+   Move `slow` one step at a time and `fast` two steps at a time. If they meet at any point, a cycle exists.
+
+3. **Check for End of List:**  
+   If `fast` or `fast->next` becomes `NULL`, return `false`, indicating that there is no cycle.
+
+### Time Complexity
+
+- **O(n)**: We traverse the list at most twice.
+
+### Space Complexity
+
+- **O(1)**: No additional space is used.
+
+### Code
+
+```cpp
+bool hasCycle(ListNode *head) {
+    ListNode *fast = head;
+    ListNode *slow = head;
+
+    while (fast != NULL && fast->next != NULL) {
+        fast = fast->next->next;  // Move fast pointer two steps
+        slow = slow->next;  // Move slow pointer one step
+
+        if (fast == slow) {
+            return true;  // Cycle found
+        }
+    }
+    return false;  // No cycle found
+}
+```
+
+# 99. Linked List Cycle II
+
+### Problem Link
+
+[LeetCode - Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+
+## Approach 1: Using HashMap
+
+### Algorithm / Intuition
+
+The starting point of a loop in the linked list is the first node we visit twice during its traversal. It's the point where we realize that we are no longer moving forward in the list but rather entering a cycle.
+
+### Steps:
+
+1. **Traverse the Linked List:**  
+   Use a temporary node starting from the head and iterate through the list until reaching null.
+
+2. **Track Visited Nodes:**  
+   Keep track of visited nodes using a map data structure.
+
+   **Note:** Storing the entire node in the map is essential to distinguish between nodes with identical values but different positions in the list. This ensures accurate loop detection and not just duplicate value checks.
+
+3. **Detect Cycle:**  
+   If a previously visited node is encountered again, return that node as it indicates the start of the loop in the linked list.
+
+4. **No Cycle:**  
+   If traversal completes and we reach the end of the list (null), return null.
+
+### Time Complexity
+
+- **O(n)**: We traverse the list once.
+
+### Space Complexity
+
+- **O(n)**: We use extra space for the map.
+
+### Code
+
+```cpp
+ListNode* detectCycle(ListNode *head) {
+    unordered_map<ListNode*, bool> visited;
+    ListNode* temp = head;
+
+    while (temp) {
+        if (visited[temp]) {
+            return temp;  // Start of the cycle detected
+        }
+        visited[temp] = true;
+        temp = temp->next;
+    }
+    return NULL;  // No cycle
+}
+```
+
+## Approach 2: Tortoise and Hare Algorithm
+
+### Algorithm:
+
+1. **Detect Cycle Presence:**
+
+   - Use two pointers, `slow` and `fast`. Both start from the head.
+   - `slow` moves one step at a time, while `fast` moves two steps at a time.
+   - If there is a cycle, `slow` and `fast` will eventually meet. If they never meet, there is no cycle.
+
+2. **Find the Start of the Cycle:**
+   - Once the cycle is detected (i.e., `slow` equals `fast`), reset the `slow` pointer to the head.
+   - Now, move both `slow` and `fast` one step at a time. The point where they meet again is the **starting node of the cycle**.
+
+### Time Complexity
+
+- **O(n)**: The list is traversed a couple of times but remains linear in complexity.
+
+### Space Complexity
+
+- **O(1)**: Only a constant amount of extra space is used.
+
+### Code
+
+```cpp
+ListNode* detectCycle(ListNode* head) {
+    if (head == NULL || head->next == NULL) {
+        return NULL;
+    }
+
+    ListNode* slow = head;
+    ListNode* fast = head;
+    bool isCycle = false;
+
+    // Step 1: Detect if a cycle is present
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            isCycle = true;
+            break;
+        }
+    }
+
+    // Step 2: If no cycle, return NULL
+    if (!isCycle) {
+        return NULL;
+    }
+
+    // Step 3: Find the starting point of the cycle
+    slow = head;
+    while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    return slow;  // Starting node of the cycle
 }
 ```
