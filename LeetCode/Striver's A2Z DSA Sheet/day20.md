@@ -348,3 +348,132 @@ ListNode* detectCycle(ListNode* head) {
     return slow;  // Starting node of the cycle
 }
 ```
+
+# 100. Find Length of Loop in Linked List
+
+### Problem Link
+
+[GeeksforGeeks - Find Length of Loop](https://www.geeksforgeeks.org/problems/find-length-of-loop/1)
+
+## Approach 1: Brute Force Hashing
+
+### Algorithm:
+
+1. **Initialize Traversal:**  
+   Start traversing the linked list using a pointer (`temp`), starting from the head node.
+
+2. **Track Nodes with Timer Values:**  
+   Maintain a hashmap (`visited`) where each node (`Node*`) is stored as the key and the timer value (step count) as the value.  
+   As we traverse the list, store the current node and its associated timer value in the hashmap.
+
+3. **Detect Loop:**  
+   If a node is encountered that has already been visited (i.e., exists in the hashmap), it indicates a loop.  
+   The length of the loop is determined by subtracting the timer value of the previously stored instance from the current timer value.
+
+4. **Return 0 for No Loop:**  
+   If the traversal reaches the end of the list (`null`) without finding any repeated nodes, return 0 indicating no loop is present.
+
+### Time Complexity:
+
+- **O(n):** We traverse the linked list once.
+
+### Space Complexity:
+
+- **O(n):** We use extra space for storing nodes in the hashmap.
+
+### Code:
+
+```cpp
+#include <unordered_map>
+
+int countNodesinLoop(Node* head) {
+    std::unordered_map<Node*, int> visited;
+    Node* temp = head;
+    int timer = 0;
+
+    while (temp != NULL) {
+        // If the node is already visited, calculate the loop length
+        if (visited.find(temp) != visited.end()) {
+            return timer - visited[temp];
+        }
+        // Mark the node with the current timer value
+        visited[temp] = timer;
+        temp = temp->next;
+        timer++;
+    }
+    // No loop found
+    return 0;
+}
+```
+
+## Approach 2: Tortoise and Hare Algorithm
+
+### Algorithm:
+
+1. **Detect Loop with Tortoise and Hare:**  
+   Use two pointers, `slow` and `fast`. The `slow` pointer moves one step at a time, while the `fast` pointer moves two steps at a time.  
+   If `slow` and `fast` meet, it confirms the presence of a loop in the linked list.
+
+2. **Find the Loop Starting Point:**  
+   Once a loop is detected, reset the `slow` pointer to the head of the linked list. Move both `slow` and `fast` pointers one step at a time.  
+   The point where they meet again is the starting point of the loop.
+
+3. **Count the Length of the Loop:**  
+   After determining the starting point of the loop, traverse the loop to count the number of nodes in the cycle.  
+   Start from the loop's entry point, move around the loop, and stop once you reach the starting point again. The number of nodes traversed will be the length of the loop.
+
+### Time Complexity:
+
+- **O(n):** Linear traversal of the linked list.
+
+### Space Complexity:
+
+- **O(1):** Only constant space is used for the two pointers.
+
+### Code:
+
+```cpp
+int countNodesinLoop(Node* head) {
+    if (head == NULL || head->next == NULL) {
+        return 0;  // No loop if the list is empty or has only one node
+    }
+
+    Node* slow = head;
+    Node* fast = head;
+
+    // Step 1: Detect Loop with Tortoise and Hare
+    while (fast != NULL && fast->next != NULL) {
+        slow = slow->next;
+        fast = fast->next->next;
+
+        if (slow == fast) {
+            // Loop detected
+            break;
+        }
+    }
+
+    // No loop found
+    if (fast == NULL || fast->next == NULL) {
+        return 0;
+    }
+
+    // Step 2: Find the Loop Starting Point
+    slow = head;
+    while (slow != fast) {
+        slow = slow->next;
+        fast = fast->next;
+    }
+
+    // Now slow and fast are both at the starting point of the loop
+
+    // Step 3: Count the Length of the Loop
+    Node* temp = slow;
+    int length = 1;
+    while (temp->next != slow) {
+        length++;
+        temp = temp->next;
+    }
+
+    return length;  // Return the length of the loop
+}
+```
