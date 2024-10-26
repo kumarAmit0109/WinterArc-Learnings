@@ -204,9 +204,8 @@ double myPow(double x, int n) {
    - For each even position, there are \( 5 \) possible digits (0, 2, 4, 6, 8).
    - For each odd position, there are \( 4 \) possible digits (1, 3, 5, 7, 9).
    - Thus, the total combinations can be expressed as:
-     \[
-     \text{Total Good Numbers} = 5^{\text{evenPositions}} \times 4^{\text{oddPositions}}
-     \]
+
+   Total Good Numbers = 5^(evenPositions) times 4^(oddPositions)
 
 3. **Modular Arithmetic**:
    - To handle large numbers, we will return the result modulo \( 10^9 + 7 \).
