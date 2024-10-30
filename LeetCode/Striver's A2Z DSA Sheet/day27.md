@@ -194,3 +194,222 @@ vector<vector<string>> partition(string s) {
     return result; // Return the result
 }
 ```
+
+# 134. Word Search
+
+### Problem Link
+
+[Word Search - LeetCode](https://leetcode.com/problems/word-search/description/)
+
+## Approach: Depth-First Search (DFS) with Backtracking
+
+### Algorithm
+
+1. **Recursive DFS Search**:
+   - The helper function `solve` performs a DFS to check if the word exists in the board starting from a given cell `(i, j)`.
+   - It verifies if each cell matches the current character in the word and then recursively explores the next character in four directions (up, down, left, right).
+2. **Base Cases**:
+
+   - If all characters in `word` have been matched (`k == word.length()`), return `true`.
+   - If the current cell is out of bounds or does not match the current character of the word, return `false`.
+
+3. **Backtracking**:
+
+   - Mark the current cell as visited temporarily by setting it to a non-alphabetic character (e.g., `'\0'`).
+   - After all recursive calls from the cell, restore its original character to allow other paths to use it.
+
+4. **Iterating Over the Board**:
+   - The `exist` function initiates the search from each cell of the board.
+   - If a valid path for `word` is found starting from any cell, it returns `true`.
+
+### Time Complexity
+
+- \( O(M times N times 4^L) \), where \( M \) and \( N \) are the dimensions of the board and \( L \) is the length of the word.
+
+### Space Complexity
+
+- \( O(L) \), due to the recursive stack where \( L \) is the length of the word.
+
+### Code
+
+```cpp
+bool solve(vector<vector<char>>& board, string& word, int i, int j, int k, int m, int n) {
+    // Base case: If we've matched all characters in the word
+    if (k == word.length()) {
+        return true;
+    }
+    // Out of bounds or character mismatch
+    if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[k]) {
+        return false;
+    }
+
+    // Temporarily mark the cell as visited
+    char temp = board[i][j];
+    board[i][j] = '\0';
+
+    // Explore all four directions
+    bool found = solve(board, word, i + 1, j, k + 1, m, n) ||
+                 solve(board, word, i - 1, j, k + 1, m, n) ||
+                 solve(board, word, i, j + 1, k + 1, m, n) ||
+                 solve(board, word, i, j - 1, k + 1, m, n);
+
+    // Restore the cell's original value
+    board[i][j] = temp;
+
+    return found;
+}
+
+bool exist(vector<vector<char>>& board, string word) {
+    int m = board.size();
+    int n = board[0].size();
+
+    // Try to find the word starting from each cell
+    for (int i = 0; i < m; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (solve(board, word, i, j, 0, m, n)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+```
+
+# 135. N-Queens
+
+### Problem Link
+
+[N-Queens - LeetCode](https://leetcode.com/problems/n-queens/description/)
+
+## Approach 1: Recursive Backtracking with Safety Checks
+
+### Algorithm
+
+1. **Backtracking**: Place queens one column at a time. For each column, attempt to place a queen in every row.
+2. **Safety Check**: Use the `isSafe` function to check three constraints:
+   - No queen exists in the same row to the left.
+   - No queen exists in the upper diagonal on the left.
+   - No queen exists in the lower diagonal on the left.
+3. **Recursive Call**: If a valid placement is found, place the queen and recurse for the next column.
+4. **Backtrack**: If a solution is found or no valid placement is possible, backtrack by removing the queen and try the next position.
+
+### Time Complexity
+
+- \(O(N!)\): Since each queen has fewer possible placements as more queens are placed on the board.
+
+### Space Complexity
+
+- \(O(N^2)\): To store the board configuration.
+
+### Code
+
+```cpp
+bool isSafe(int row, int col, vector<string>& board, int n) {
+    // Check the same row on the left side
+    for (int i = 0; i < col; i++) {
+        if (board[row][i] == 'Q') return false;
+    }
+
+    // Check the upper diagonal on the left side
+    for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if (board[i][j] == 'Q') return false;
+    }
+
+    // Check the lower diagonal on the left side
+    for (int i = row, j = col; i < n && j >= 0; i++, j--) {
+        if (board[i][j] == 'Q') return false;
+    }
+
+    return true;
+}
+
+void solve(int col, vector<string>& board, vector<vector<string>>& solutions, int n) {
+    if (col == n) {
+        solutions.push_back(board);
+        return;
+    }
+
+    for (int row = 0; row < n; row++) {
+        if (isSafe(row, col, board, n)) {
+            board[row][col] = 'Q';
+            solve(col + 1, board, solutions, n);
+            board[row][col] = '.';
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n) {
+    vector<vector<string>> solutions;
+    vector<string> board(n, string(n, '.'));
+    solve(0, board, solutions, n);
+    return solutions;
+}
+```
+
+## Approach 2: Recursive Backtracking with Hashing for Optimized Safety Checks
+
+### Algorithm
+
+1. **Hash Arrays**: Utilize three hash arrays to mark rows and diagonals for queen placements:
+   - `leftRow`: Tracks queens placed in rows.
+   - `upperDiagonal`: Tracks queens in upper diagonals.
+   - `lowerDiagonal`: Tracks queens in lower diagonals.
+2. **Backtracking with Optimized Safety**:
+   - For each column, try placing queens row by row.
+   - Check the hash arrays to ensure the placement is safe.
+3. **Recursive Call**: Place a queen and recursively attempt to place queens in the next column if safe.
+4. **Backtrack**: Remove the queen and reset hash values when backtracking.
+
+### Time Complexity
+
+- \(O(N!)\): Similar to the basic backtracking approach but optimized with faster safety checks.
+
+### Space Complexity
+
+- \(O(N^2)\): To store board configurations, with an additional \(O(3N)\) for hash arrays.
+
+### Code
+
+```cpp
+#include <vector>
+#include <string>
+
+using namespace std;
+
+void solve(int col, vector<string>& board, vector<vector<string>>& solutions,
+           vector<int>& leftRow, vector<int>& upperDiagonal, vector<int>& lowerDiagonal, int n) {
+    if (col == n) {
+        solutions.push_back(board);
+        return;
+    }
+
+    for (int row = 0; row < n; row++) {
+        if (leftRow[row] == 0 && lowerDiagonal[row + col] == 0 && upperDiagonal[n - 1 + col - row] == 0) {
+            board[row][col] = 'Q';
+            leftRow[row] = 1;
+            lowerDiagonal[row + col] = 1;
+            upperDiagonal[n - 1 + col - row] = 1;
+
+            solve(col + 1, board, solutions, leftRow, upperDiagonal, lowerDiagonal, n);
+
+            // Backtrack
+            board[row][col] = '.';
+            leftRow[row] = 0;
+            lowerDiagonal[row + col] = 0;
+            upperDiagonal[n - 1 + col - row] = 0;
+        }
+    }
+}
+
+vector<vector<string>> solveNQueens(int n) {
+    vector<vector<string>> solutions;
+    vector<string> board(n, string(n, '.'));
+
+    vector<int> leftRow(n, 0);
+    vector<int> upperDiagonal(2 * n - 1, 0);
+    vector<int> lowerDiagonal(2 * n - 1, 0);
+
+    solve(0, board, solutions, leftRow, upperDiagonal, lowerDiagonal, n);
+    return solutions;
+}
+```
