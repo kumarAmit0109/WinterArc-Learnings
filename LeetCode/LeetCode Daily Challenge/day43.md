@@ -74,10 +74,6 @@ public:
 };
 ```
 
-# Most Beautiful Item for Each Query
-
-**Problem Link**: [Most Beautiful Item for Each Query](https://leetcode.com/problems/most-beautiful-item-for-each-query/)
-
 ## Approach 2: Map with Upper Bound Search
 
 ### Idea
