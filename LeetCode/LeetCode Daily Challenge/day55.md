@@ -2,8 +2,6 @@
 
 **Problem Link**: [Maximum Matrix Sum](https://leetcode.com/problems/maximum-matrix-sum/description/)
 
----
-
 ## Approach: Summation with Adjustment for Negatives
 
 ### Idea
