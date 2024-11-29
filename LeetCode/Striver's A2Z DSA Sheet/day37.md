@@ -510,7 +510,9 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
 # 185. Online Stock Span
 
-**Problem Link**: [https://leetcode.com/problems/online-stock-span/](https://leetcode.com/problems/online-stock-span/)
+### Problem Link
+
+[LeetCode - Online Stock Span](https://leetcode.com/problems/online-stock-span/)
 
 ## Approach 1: Using a Vector to Store Prices
 
