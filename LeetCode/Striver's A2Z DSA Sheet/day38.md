@@ -1,6 +1,8 @@
 # 186. The Celebrity Problem
 
-**Problem Link**: [https://www.geeksforgeeks.org/problems/the-celebrity-problem/1](https://www.geeksforgeeks.org/problems/the-celebrity-problem/1)
+### Problem Link
+
+[ GeeksForGeeks - The Celebrity Problem](https://www.geeksforgeeks.org/problems/the-celebrity-problem/1)
 
 ## Approach 1: Using Indegree and Outdegree
 
@@ -128,7 +130,9 @@ class Solution {
 
 # 187. LRU Cache
 
-**Problem Link**: [https://leetcode.com/problems/lru-cache/description/](https://leetcode.com/problems/lru-cache/description/)
+### Problem Link
+
+[LeetCode - LRU Cache ](https://leetcode.com/problems/lru-cache/description/)
 
 ## Approach 1: Using a Vector to Store Key-Value Pairs
 
@@ -300,7 +304,9 @@ public:
 
 # 188. LFU Cache
 
-**Problem Link**: [https://leetcode.com/problems/lfu-cache/](https://leetcode.com/problems/lfu-cache/)
+### Problem Link
+
+[LeetCode - Lfu Cache](https://leetcode.com/problems/lfu-cache/)
 
 ---
 
@@ -420,7 +426,9 @@ public:
 
 # 189. Longest Substring Without Repeating Characters
 
-**Problem Link**: [https://leetcode.com/problems/longest-substring-without-repeating-characters](https://leetcode.com/problems/longest-substring-without-repeating-characters)
+### Problem Link
+
+[LeetCode - Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters)
 
 ## Approach 1: Using Nested Loops and an Unordered Set
 
@@ -553,7 +561,9 @@ public:
 
 # 190. Max Consecutive Ones III
 
-**Problem Link**: [https://leetcode.com/problems/max-consecutive-ones-iii/description/](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
+### Problem Link
+
+[LeetCode - Max Consecutive Ones III ](https://leetcode.com/problems/max-consecutive-ones-iii/description/)
 
 ## Approach 1: Brute Force with Nested Loops
 
