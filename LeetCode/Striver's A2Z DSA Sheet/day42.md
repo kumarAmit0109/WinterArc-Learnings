@@ -451,7 +451,7 @@ ListNode* mergeKLists(vector<ListNode*>& lists) {
 
 ### Problem Link
 
-[GeeksforGeeks - Replace Elements by Its Rank in the Array](https://www.geeksforgeeks.org/problems/replace-elements-by-its-rank-in-the-array/)
+[GeeksforGeeks - Replace Elements by Its Rank in the Array](https://www.geeksforgeeks.org/problems/replace-elements-by-its-rank-in-the-array/1)
 
 ## Approach 1: Sorting and HashMap
 
